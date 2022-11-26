@@ -127,8 +127,7 @@ class EntryConvolutionalBlock(nn.Module):
                                               padding=self.padding, stride=1)
 
         out = self.layer_dict['conv_0'].forward(out)
-        self.layer_dict['bn_0'] = nn.BatchNorm2d(num_features=out.shape[1])
-        out = F.leaky_relu(self.layer_dict['bn_0'].forward(out))
+        out = F.leaky_relu(out)
 
         print(out.shape)
 
@@ -136,7 +135,7 @@ class EntryConvolutionalBlock(nn.Module):
         out = x
 
         out = self.layer_dict['conv_0'].forward(out)
-        out = F.leaky_relu(self.layer_dict['bn_0'].forward(out))
+        out = F.leaky_relu(out)
 
         return out
 
@@ -458,6 +457,7 @@ class BatchNormalisationResidualConnectionsConvolutionalProcessingBlock(nn.Modul
 
     def build_module(self):
         self.layer_dict = nn.ModuleDict()
+        residual = x
         x = torch.zeros(self.input_shape)
         out = x
 
@@ -477,7 +477,7 @@ class BatchNormalisationResidualConnectionsConvolutionalProcessingBlock(nn.Modul
         out = self.layer_dict['conv_1'].forward(out)
         
         self.layer_dict['bn_1'] = nn.BatchNorm2d(num_features=out.shape[1])
-        out = F.leaky_relu(self.layer_dict['bn_1'].forward(out))
+        out = F.leaky_relu(self.layer_dict['bn_1'].forward(out)+residual)
 
         print(out.shape)
 
