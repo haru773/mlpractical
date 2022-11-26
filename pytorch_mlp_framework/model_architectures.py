@@ -356,7 +356,7 @@ class ConvolutionalProcessingBlock(nn.Module):
 
     def build_module(self):
         self.layer_dict = nn.ModuleDict()
-        x = torch.zeros(self.input_shape)
+        x = torch.zeros(self.input_shape,requires_grad=true)
         out = x
 
         self.layer_dict['conv_0'] = nn.Conv2d(in_channels=out.shape[1], out_channels=self.num_filters, bias=self.bias,
@@ -464,7 +464,7 @@ class ConvolutionalDimensionalityReductionBlock(nn.Module):
 
     def build_module(self):
         self.layer_dict = nn.ModuleDict()
-        x = torch.zeros(self.input_shape)
+        x = torch.zeros(self.input_shape,requires_grad=true)
         out = x
 
         self.layer_dict['conv_0'] = nn.Conv2d(in_channels=out.shape[1], out_channels=self.num_filters, bias=self.bias,
