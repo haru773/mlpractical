@@ -7,6 +7,10 @@ import mlp.data_providers as data_providers
 from pytorch_mlp_framework.arg_extractor import get_args
 from pytorch_mlp_framework.experiment_builder import ExperimentBuilder
 from pytorch_mlp_framework.model_architectures import *
+from pytorch_mlp_framework.model_architectures import BatchNormalisationConvolutionalProcessingBlock
+from pytorch_mlp_framework.model_architectures import BatchNormalisationConvolutionalDimensionalityReductionBlock
+from pytorch_mlp_framework.model_architectures import BatchNormalisationResidualConnectionsConvolutionalProcessingBlock
+
 import os 
 # os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
