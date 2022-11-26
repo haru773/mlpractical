@@ -47,6 +47,9 @@ if args.block_type == 'conv_block':
 elif args.block_type == 'bn_block':
     processing_block_type = BatchNormalisationConvolutionalProcessingBlock
     dim_reduction_block_type = BatchNormalisationConvolutionalDimensionalityReductionBlock
+elif args.block_type == 'bn_rc_block':
+    processing_block_type = BatchNormalisationResidualConnectionsConvolutionalProcessingBlock
+    dim_reduction_block_type = BatchNormalisationConvolutionalDimensionalityReductionBlock
 elif args.block_type == 'empty_block':
     processing_block_type = EmptyBlock
     dim_reduction_block_type = EmptyBlock
@@ -62,10 +65,11 @@ custom_conv_net = ConvolutionalNetwork(  # initialize our network object, in thi
 
 conv_experiment = ExperimentBuilder(network_model=custom_conv_net,
                                     experiment_name=args.experiment_name,
-                                    num_epochs=1,
+                                    num_epochs=args.num_epochs,
                                     weight_decay_coefficient=args.weight_decay_coefficient,
                                     use_gpu=args.use_gpu,
                                     continue_from_epoch=args.continue_from_epoch,
                                     train_data=train_data_loader, val_data=val_data_loader,
-                                    test_data=test_data_loader)  # build an experiment object
+                                    test_data=test_data_loader,
+                                    learning_rate=args.learning_rate)  # build an experiment object
 experiment_metrics, test_metrics = conv_experiment.run_experiment()  # run experiment and return experiment metrics

@@ -14,7 +14,7 @@ matplotlib.rcParams.update({'font.size': 8})
 
 class ExperimentBuilder(nn.Module):
     def __init__(self, network_model, experiment_name, num_epochs, train_data, val_data,
-                 test_data, weight_decay_coefficient, use_gpu, continue_from_epoch=-1):
+                 test_data, weight_decay_coefficient, use_gpu, continue_from_epoch=-1, learning_rate=1e-3):
         """
         Initializes an ExperimentBuilder object. Such an object takes care of running training and evaluation of a deep net
         on a given dataset. It also takes care of saving per epoch models and automatically inferring the best val model
@@ -72,7 +72,7 @@ class ExperimentBuilder(nn.Module):
         print('Total number of conv layers', num_conv_layers)
         print('Total number of linear layers', num_linear_layers)
 
-        self.optimizer = optim.Adam(self.parameters(), amsgrad=False,
+        self.optimizer = optim.Adam(self.parameters(), lr=learning_rate, amsgrad=False,
                                     weight_decay=weight_decay_coefficient)
         self.learning_rate_scheduler = optim.lr_scheduler.CosineAnnealingLR(self.optimizer,
                                                                             T_max=num_epochs,
@@ -131,6 +131,9 @@ class ExperimentBuilder(nn.Module):
         plt.plot(all_grads, alpha=0.3, color="b")
         plt.hlines(0, 0, len(all_grads)+1, linewidth=1, color="k" )
         plt.xticks(range(0,len(all_grads), 1), layers, rotation="vertical")
+
+        plt.xticks(fontsize = 5)
+        
         plt.xlim(xmin=0, xmax=len(all_grads))
         plt.xlabel("Layers")
         plt.ylabel("Average Gradient")
@@ -151,25 +154,16 @@ class ExperimentBuilder(nn.Module):
         layers = []
         
         """
-        Complete the code in the block below to collect absolute mean of the gradients for each layer in all_grads with the layer names in layers.
+        Complete the code in the block below to collect absolute mean of the gradients for each layer in all_grads with the             layer names in layers.
         """
         ########################################
-        # for name, parameter in named_parameters:
-        #     if (parameter.requires_grad) and ('bias' not in name):
-        #         n,r = name.rsplit('.', 1)
-        #         layer = n[6:]
-        #         if layer not in layers:
-        #             layers.append(name)
-        #             all_grads.append(parameter.grad.abs().mean())
-        #         else:
-        #             all_grads[len(all_grads)-1] = np.mean([all_grads[len(all_grads)-1], parameter.grad.abs().mean()])
-        for n, p in named_parameters:
-            if(p.requires_grad) and ("bias" not in n):
-                n1 = n.replace('.weight','')
-                n2 = n1.replace('.layer_dict.','_')
-                n3 = n2.replace('layer_dict.','')                    #change the string to the requested format
-                layers.append(n3)
-                all_grads.append(p.grad.abs().mean())        
+        for name, param in named_parameters:
+            if (param.requires_grad) and ("weight" in name):
+                if name=='logit_linear_layer.weight':
+                    layers.append('weight_logit_linear_layer')
+                else:
+                    layers.append(name.replace('layer_dict.','').replace('.weight','').replace('.','_'))
+                all_grads.append(param.grad.abs().mean())
         ########################################
             
         
