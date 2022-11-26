@@ -176,5 +176,6 @@ conv_experiment = ExperimentBuilder(network_model=custom_conv_net,
                                     continue_from_epoch=args.continue_from_epoch,
                                     train_data=train_data_loader, val_data=val_data_loader,
                                     test_data=test_data_loader,
-                                    learning_rate=0.01)  # build an experiment object
+                                    # learning_rate=0.01
+                                    )  # build an experiment object
 experiment_metrics, test_metrics = conv_experiment.run_experiment()  # run experiment and return experiment metrics
