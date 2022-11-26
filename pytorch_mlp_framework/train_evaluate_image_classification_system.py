@@ -42,8 +42,8 @@ val_data_loader = DataLoader(val_data, batch_size=args.batch_size, shuffle=True,
 test_data_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True, num_workers=4)
 
 if args.block_type == 'conv_block':
-    processing_block_type = ConvolutionalProcessingBlock
-    dim_reduction_block_type = ConvolutionalDimensionalityReductionBlock
+    processing_block_type = ConvolutionalProcessingBlockBC
+    dim_reduction_block_type = ConvolutionalDimensionalityReductionBlockBC
 elif args.block_type == 'empty_block':
     processing_block_type = EmptyBlock
     dim_reduction_block_type = EmptyBlock
@@ -59,7 +59,7 @@ custom_conv_net = ConvolutionalNetwork(  # initialize our network object, in thi
 
 conv_experiment = ExperimentBuilder(network_model=custom_conv_net,
                                     experiment_name=args.experiment_name,
-                                    num_epochs=args.num_epochs,
+                                    num_epochs=1,
                                     weight_decay_coefficient=args.weight_decay_coefficient,
                                     use_gpu=args.use_gpu,
                                     continue_from_epoch=args.continue_from_epoch,
