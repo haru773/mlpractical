@@ -489,9 +489,7 @@ class BatchNormalisationResidualConnectionsConvolutionalProcessingBlock(nn.Modul
         out = F.leaky_relu(self.layer_dict['bn_0'].forward(out)) # Batch normalisation
 
         out = self.layer_dict['conv_1'].forward(out)
-        out = self.layer_dict['bn_1'].forward(out) # Batch normalisation
-        out += residual # Residual connections
-        out = F.leaky_relu(out)
+        out = F.leaky_relu(self.layer_dict['bn_1'].forward(out)+residual) # Batch normalisation
 
         return out
 
