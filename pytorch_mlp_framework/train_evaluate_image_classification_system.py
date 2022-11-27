@@ -28,8 +28,8 @@ class BatchNormalisationResidualConnectionsConvolutionalProcessingBlock(nn.Modul
 
     def build_module(self):
         self.layer_dict = nn.ModuleDict()
-        residual = x
         x = torch.zeros(self.input_shape)
+        residual = x
         out = x
 
         self.layer_dict['conv_0'] = nn.Conv2d(in_channels=out.shape[1], out_channels=self.num_filters, bias=self.bias,
@@ -53,8 +53,8 @@ class BatchNormalisationResidualConnectionsConvolutionalProcessingBlock(nn.Modul
         print(out.shape)
 
     def forward(self, x):
-        residual = x # Residual connections
         out = x
+        residual = x
 
         out = self.layer_dict['conv_0'].forward(out)
         out = F.leaky_relu(self.layer_dict['bn_0'].forward(out)) # Batch normalisation
